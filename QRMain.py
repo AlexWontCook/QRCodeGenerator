@@ -1,7 +1,5 @@
-#TODO FIX QR CODES WITH LINKS:
-#Need to add a way to sanitize the slashes from the exported name
-
 import qrcode
+import qrcode.image.svg
 import PySimpleGUI as sg
 import os
 
@@ -24,7 +22,8 @@ layout = [
     [sg.Button('Generate QR Code', size=(30,4))],
     [sg.Button('Exit', size=(30,4))],
     [sg.Image(filename=img,expand_x=True,expand_y=True,key="-IMAGE-")],
-    [sg.Text("Current QR Code:"), sg.Text("",key="-OUTPUT-")]
+    [sg.Text("Current QR Code:"), sg.Text("",key="-OUTPUT-")],
+    [sg.Radio("PNG","gen", key="-PNG-",default=True),sg.Radio("SVG","gen",key="-SVG-")]
 ]
 
 window = sg.Window('QR Code Generator', layout,element_justification='c')
@@ -46,11 +45,18 @@ while True:
         USER_INP = str(custName)
         def qrCodeGenerator(inputtext):
             cleanInput = inputtext.replace('/','')
-            img = qrcode.make(inputtext)
-            img.save(path + "\\"+ str(cleanInput) + ".png")
-            imgPath = path + "\\" + cleanInput + ".png"
+            if values['-PNG-'] == True:
+                img = qrcode.make(inputtext)
+                img.save(path + "\\"+ str(cleanInput) + ".png")
+                imgPath = path + "\\" + cleanInput + ".png"
+                window['-IMAGE-'].update(imgPath)
+                sg.popup_ok("File exported successfully to " + path,auto_close_duration=3,title="Success!")
+            elif values['-SVG-'] == True:
+                factory = qrcode.image.svg.SvgImage
+                img = qrcode.make(inputtext,image_factory=factory)
+                img.save(path + "\\" + str(cleanInput) + ".svg")
+                sg.popup_ok("File exported successfully to " + path,auto_close_duration=3,title="Success!")
             window['-OUTPUT-'].update(inputtext)
-            window['-IMAGE-'].update(imgPath)
             window.refresh()
             print("QR Code created:" + inputtext)
             print("QR Code has been saved to folder: " + path)
