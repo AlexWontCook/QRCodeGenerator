@@ -17,7 +17,7 @@ if not isExist:
 #GUI Layout
 layout = [
     [sg.Text("Current export folder:"), sg.Text(path,key="-FOLDERPATH-"),sg.FolderBrowse("Change",key="-NEWFOLDER-")],
-    [sg.Text("Enter Serial Number:")],
+    [sg.Text("Enter text:")],
     [sg.Input("",do_not_clear=False)],
     [sg.Button('Generate QR Code', size=(30,4))],
     [sg.Button('Exit', size=(30,4))],
@@ -44,17 +44,20 @@ while True:
         custName = current[0]
         USER_INP = str(custName)
         def qrCodeGenerator(inputtext):
-            cleanInput = inputtext.replace('/','')
             if values['-PNG-'] == True:
                 img = qrcode.make(inputtext)
-                img.save(path + "\\"+ str(cleanInput) + ".png")
-                imgPath = path + "\\" + cleanInput + ".png"
+                cleanInput = inputtext.replace('/','')
+                cleanInput2 = cleanInput.replace(':','')
+                img.save(path + "\\"+ str(cleanInput2) + ".png")
+                imgPath = path + "\\" + cleanInput2 + ".png"
                 window['-IMAGE-'].update(imgPath)
                 sg.popup_ok("File exported successfully to " + path,auto_close_duration=3,title="Success!")
             elif values['-SVG-'] == True:
                 factory = qrcode.image.svg.SvgImage
                 img = qrcode.make(inputtext,image_factory=factory)
-                img.save(path + "\\" + str(cleanInput) + ".svg")
+                cleanInput = inputtext.replace('/','')
+                cleanInput2 = cleanInput.replace(':','')
+                img.save(path + "\\" + str(cleanInput2) + ".svg")
                 sg.popup_ok("File exported successfully to " + path,auto_close_duration=3,title="Success!")
             window['-OUTPUT-'].update(inputtext)
             window.refresh()
