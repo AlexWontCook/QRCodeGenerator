@@ -50,8 +50,9 @@ while True:
                 img = qrcode.make(inputtext)
                 cleanInput = inputtext.replace('/','')
                 cleanInput2 = cleanInput.replace(':','')
-                img.save(path + "\\"+ str(cleanInput2) + ".png")
-                imgPath = path + "\\" + cleanInput2 + ".png"
+                cleanInput3 = cleanInput2.replace('\\','')
+                img.save(path + "\\"+ str(cleanInput3) + ".png")
+                imgPath = path + "\\" + cleanInput3 + ".png"
                 window['-IMAGE-'].update(imgPath)
                 sg.popup_ok("File exported successfully to " + path,auto_close_duration=3,title="Success!")
             elif values['-SVG-'] == True:
@@ -59,7 +60,8 @@ while True:
                 img = qrcode.make(inputtext,image_factory=factory)
                 cleanInput = inputtext.replace('/','')
                 cleanInput2 = cleanInput.replace(':','')
-                img.save(path + "\\" + str(cleanInput2) + ".svg")
+                cleanInput3 = cleanInput2.replace('\\','')
+                img.save(path + "\\" + str(cleanInput3) + ".svg")
                 sg.popup_ok("File exported successfully to " + path,auto_close_duration=3,title="Success!")
             window['-OUTPUT-'].update(inputtext)
             window.refresh()
