@@ -8,6 +8,8 @@ import os
 path = "QRCodes"
 img = ""
 
+sg.theme('dark grey 9')
+
 #Check if QRCodes folder exists, if not, it will be created
 isExist = os.path.exists(path)
 if not isExist:
