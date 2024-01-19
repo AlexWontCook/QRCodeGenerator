@@ -1,3 +1,6 @@
+#TODO FIX QR CODES WITH LINKS:
+#Need to add a way to sanitize the slashes from the exported name
+
 import qrcode
 import PySimpleGUI as sg
 import os
@@ -42,9 +45,10 @@ while True:
         custName = current[0]
         USER_INP = str(custName)
         def qrCodeGenerator(inputtext):
+            cleanInput = inputtext.replace('/','')
             img = qrcode.make(inputtext)
-            img.save(path + "\\"+ str(inputtext) + ".png")
-            imgPath = path + "\\" + inputtext + ".png"
+            img.save(path + "\\"+ str(cleanInput) + ".png")
+            imgPath = path + "\\" + cleanInput + ".png"
             window['-OUTPUT-'].update(inputtext)
             window['-IMAGE-'].update(imgPath)
             window.refresh()
